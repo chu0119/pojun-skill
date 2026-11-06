@@ -71,3 +71,22 @@ report-template.md。硬性要求：
 □ 有没有把 inferred 混写成 confirmed 的条目？
 □ scope 外发现都标了 out-of-scope 而不是展开测试？
 ```
+
+## 七、证据分级 L1–L4（Pojun v0.4.5x 对齐）
+
+| 级别 | 含义 | 可报等级 |
+|---|---|---|
+| L1 | 线索/推测（版本匹配、页面特征、情报命中） | 不报，只记 inferred fact |
+| L2 | 输入到达后端但无真实影响（报错/延迟差异） | medium，注明利用条件 |
+| L3 | 真实影响达成（读到他人数据/文件内容/命令回显） | high |
+| L4 | 完整利用链/控制权（getshell/管理权限/批量） | critical |
+
+## 八、机械验证凭据（critical/high 的 evidence 硬门槛）
+
+至少含一项，否则**不算漏洞**（平台版会对这类上报直接打回）：
+- HTTP 状态码 + 响应原文（含关键字段/特征）
+- curl / sqlmap / nuclei 命令及其完整输出
+- JSON 响应关键回显（`"code":` / `"status":` 等）
+- 外带记录（DNS/HTTP 回连，interactsh 或平台 listener 捕获）
+
+**三不**：纯版本匹配不算、纯工具 banner 不算、"页面写着后台"不算。
